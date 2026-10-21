@@ -1,0 +1,1249 @@
+/* =========================
+   1. 页面基础设置
+========================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #141414;
+    color: #f5f0e8;
+    font-family: Georgia, serif;
+    min-height: 100vh;
+}
+
+/* =========================
+   2. 页面标题
+========================= */
+
+header {
+    text-align: center;
+    padding: 55px 20px 20px;
+}
+
+header h1 {
+    font-size: 36px;
+    letter-spacing: 5px;
+    font-weight: normal;
+}
+
+header p {
+    margin-top: 12px;
+    font-size: 12px;
+    letter-spacing: 5px;
+    color: #b7a99a;
+}
+
+/* =========================
+   3. 主体布局
+========================= */
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 45px;
+    padding: 35px 20px 60px;
+}
+
+/* =========================
+   4. 扑克牌展示区域
+========================= */
+
+.deck-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#card-deck {
+    width: 280px;
+    height: 390px;
+    position: relative;
+    margin: 15px 0 35px;
+}
+
+/* =========================
+   5. 扑克牌堆叠效果
+========================= */
+
+#card-deck::before,
+#card-deck::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #e8dfd2;
+    border-radius: 15px;
+    border: 1px solid #c9bba9;
+}
+
+/* 最底下的一张牌 */
+#card-deck::before {
+    top: 12px;
+    left: 12px;
+    transform: rotate(7deg);
+}
+
+/* 中间的一张牌 */
+#card-deck::after {
+    top: 6px;
+    left: -8px;
+    transform: rotate(-5deg);
+}
+
+/* =========================
+   6. 正面的扑克牌
+========================= */
+
+.card {
+    width: 280px;
+    height: 390px;
+
+    background: #f5f0e8;
+    color: #191919;
+
+    border-radius: 15px;
+    border: 1px solid #d4c9bb;
+
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 30px;
+
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
+
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    cursor: pointer;
+    user-select: none;
+    touch-action: none;
+}
+
+/* 鼠标放在扑克牌上时 */
+.card:hover {
+    transform: translateY(-8px) rotate(-2deg);
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.45);
+}
+
+/* =========================
+   7. 扑克牌花色
+========================= */
+
+.card-suit {
+    position: absolute;
+    top: 20px;
+    left: 22px;
+
+    font-size: 38px;
+    line-height: 1;
+}
+
+/* 右下角花色 */
+.card-suit.bottom {
+    top: auto;
+    left: auto;
+    bottom: 20px;
+    right: 22px;
+
+    transform: rotate(180deg);
+}
+
+/* =========================
+   8. 扑克牌文字
+========================= */
+
+.card-content {
+    text-align: center;
+    width: 100%;
+}
+
+.card-content h2 {
+    font-size: 23px;
+    letter-spacing: 2px;
+    line-height: 1.4;
+    margin-bottom: 15px;
+    overflow-wrap: anywhere;
+}
+
+.card-content p {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+}
+
+/* =========================
+   9. 抽牌提示
+========================= */
+
+.deck-hint {
+    font-size: 12px;
+    letter-spacing: 5px;
+    color: #aaa096;
+}
+
+/* =========================
+   10. 创建备忘录区域
+========================= */
+
+.memo-input {
+    width: 100%;
+    max-width: 400px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 20px;
+}
+
+.memo-input h2 {
+    font-size: 16px;
+    font-weight: normal;
+    letter-spacing: 5px;
+}
+
+/* 输入框 */
+
+#memo-text {
+    width: 100%;
+    height: 50px;
+
+    padding: 15px;
+
+    background: #222;
+    color: #fff;
+
+    border: 1px solid #555;
+    border-radius: 6px;
+
+    font-family: Georgia, serif;
+    font-size: 15px;
+
+    outline: none;
+}
+
+#memo-text:focus {
+    border-color: #d1b6a0;
+}
+
+/* =========================
+   11. 花色选择按钮
+========================= */
+
+.suit-selection {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.suit {
+    width: 52px;
+    height: 52px;
+
+    background: #f5f0e8;
+    border: 2px solid transparent;
+    border-radius: 8px;
+
+    font-size: 30px;
+    cursor: pointer;
+
+    transition: transform 0.2s ease;
+}
+
+.suit:hover {
+    transform: translateY(-5px);
+}
+
+/* 红色花色 */
+
+.suit[data-suit="♥"],
+.suit[data-suit="♦"] {
+    color: #bd3039;
+}
+
+/* 黑色花色 */
+
+.suit[data-suit="♠"],
+.suit[data-suit="♣"] {
+    color: #191919;
+}
+
+/* 被选择的花色（以后 JS 会用到） */
+
+.suit.selected {
+    border-color: #d4aa70;
+    background: #e2d3bc;
+    transform: translateY(-4px);
+}
+
+/* =========================
+   12. 添加卡牌按钮
+========================= */
+
+#add-card {
+    width: 100%;
+    height: 52px;
+
+    background: #bd3039;
+    color: white;
+
+    border: none;
+    border-radius: 6px;
+
+    font-family: Georgia, serif;
+    font-size: 14px;
+    letter-spacing: 3px;
+
+    cursor: pointer;
+
+    transition: background 0.2s ease;
+}
+
+#add-card:hover {
+    background: #97242c;
+}
+
+/* =========================
+   13. 手机适配
+========================= */
+
+@media (max-width: 600px) {
+
+    header h1 {
+        font-size: 24px;
+        letter-spacing: 3px;
+    }
+
+    #card-deck,
+    .card {
+        width: 250px;
+        height: 350px;
+    }
+
+    main {
+        gap: 35px;
+    }
+
+    .memo-input {
+        max-width: 330px;
+    }
+}
+/* =========================
+   14. 抽牌动画
+========================= */
+
+.card.drawing {
+    transform: translateX(350px) rotate(25deg) !important;
+    opacity: 0;
+
+    transition:
+        transform 0.35s ease-in,
+        opacity 0.35s ease-in;
+}
+/* =========================
+   15. 出牌 PLAY 动画
+========================= */
+
+.card.playing {
+    transform: translateY(-450px) rotate(-15deg) scale(0.85) !important;
+    opacity: 0;
+
+    transition:
+        transform 0.45s ease-in,
+        opacity 0.45s ease-in;
+}
+/* =========================
+   16. 三个牌堆的切换按钮
+========================= */
+
+.deck-navigation {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 5px;
+    flex-wrap: wrap;
+}
+
+.deck-tab {
+    background: transparent;
+    color: #a99f93;
+
+    border: 1px solid #5c554f;
+    border-radius: 5px;
+
+    padding: 12px 16px;
+
+    font-family: Georgia, serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.deck-tab:hover {
+    color: #f5f0e8;
+    border-color: #f5f0e8;
+}
+
+.deck-tab.active {
+    background: #f5f0e8;
+    color: #191919;
+    border-color: #f5f0e8;
+}
+
+.deck-tab span {
+    margin-left: 5px;
+    font-size: 12px;
+}
+
+/* =========================
+   17. 暂存和已完成卡牌列表
+========================= */
+
+.saved-cards {
+    width: 100%;
+    max-width: 420px;
+
+    display: none;
+    flex-direction: column;
+    gap: 12px;
+
+    margin-top: 15px;
+}
+
+/* 列表中的小卡牌 */
+
+.saved-card {
+    background: #f5f0e8;
+    color: #191919;
+
+    border-radius: 8px;
+    padding: 18px 20px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+
+    border: 1px solid #d4c9bb;
+}
+
+.saved-card-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    min-width: 0;
+}
+
+.saved-card-suit {
+    font-size: 28px;
+}
+
+.saved-card-text {
+    font-size: 14px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.saved-card button {
+    background: #bd3039;
+    color: white;
+
+    border: none;
+    border-radius: 4px;
+
+    padding: 9px 12px;
+    font-family: Georgia, serif;
+    font-size: 11px;
+    letter-spacing: 1px;
+
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.saved-card button:hover {
+    background: #97242c;
+}
+
+/* 空牌堆提示 */
+
+.empty-deck {
+    color: #a99f93;
+    text-align: center;
+    font-size: 13px;
+    letter-spacing: 2px;
+    padding: 25px 10px;
+}
+/* =========================
+   18. 优先级选择区域
+========================= */
+
+.priority-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+}
+
+.priority-label {
+    font-size: 12px;
+    letter-spacing: 4px;
+    color: #b7a99a;
+}
+
+.priority-selection {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+/* 优先级按钮 */
+
+.priority {
+    width: 48px;
+    height: 48px;
+
+    background: #f5f0e8;
+    color: #191919;
+
+    border: 2px solid transparent;
+    border-radius: 6px;
+
+    font-family: Georgia, serif;
+    font-size: 20px;
+    font-weight: bold;
+
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.priority:hover {
+    transform: translateY(-4px);
+}
+
+/* 当前选中的优先级 */
+
+.priority.selected {
+    background: #bd3039;
+    color: white;
+    border-color: #d4aa70;
+    transform: translateY(-4px);
+}
+/* =========================
+   19. 排序与洗牌按钮
+========================= */
+
+.deck-controls {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.deck-controls button {
+    background: transparent;
+    color: #f5f0e8;
+
+    border: 1px solid #a99f93;
+    border-radius: 5px;
+
+    padding: 12px 18px;
+
+    font-family: Georgia, serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.deck-controls button:hover {
+    background: #f5f0e8;
+    color: #191919;
+}
+/* =========================
+   20. HOW TO PLAY 操作指南
+========================= */
+
+/* 右上角问号按钮 */
+
+#help-button {
+    position: fixed;
+    top: 25px;
+    right: 30px;
+    z-index: 100;
+
+    width: 42px;
+    height: 42px;
+
+    background: #bd3039;
+    color: white;
+
+    border: 1px solid #d4aa70;
+    border-radius: 50%;
+
+    font-family: Georgia, serif;
+    font-size: 22px;
+
+    cursor: pointer;
+}
+
+#help-button:hover {
+    background: #97242c;
+}
+
+/* 半透明黑色背景 */
+
+.help-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+
+    background: rgba(0, 0, 0, 0.85);
+
+    display: none;
+    justify-content: center;
+    align-items: center;
+
+    padding: 20px;
+    overflow-y: auto;
+}
+
+/* 中央弹窗 */
+
+.help-panel {
+    width: 100%;
+    max-width: 480px;
+    max-height: 90vh;
+
+    overflow-y: auto;
+
+    background: #f5f0e8;
+    color: #191919;
+
+    border-radius: 15px;
+    border: 2px solid #d4aa70;
+
+    padding: 35px 30px;
+
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+/* 弹窗标题 */
+
+.help-heading {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.help-heading span {
+    font-size: 25px;
+    color: #bd3039;
+    letter-spacing: 10px;
+}
+
+.help-heading h2 {
+    margin-top: 12px;
+    font-size: 25px;
+    letter-spacing: 3px;
+}
+
+.help-heading p {
+    margin-top: 10px;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: #777;
+}
+
+/* 操作说明 */
+
+.help-rules {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.help-rule {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 20px;
+    padding: 12px 0;
+
+    border-bottom: 1px solid #d4c9bb;
+}
+
+.help-rule span {
+    min-width: 120px;
+
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 1px;
+
+    color: #bd3039;
+}
+
+.help-rule p {
+    flex: 1;
+
+    font-size: 13px;
+    line-height: 1.5;
+    color: #333;
+}
+
+/* 优先级提示 */
+
+.help-note {
+    margin-top: 25px;
+    margin-bottom: 20px;
+
+    text-align: center;
+
+    color: #777;
+    font-size: 11px;
+    letter-spacing: 2px;
+}
+
+/* LET'S PLAY 按钮 */
+
+#close-help {
+    width: 100%;
+    height: 50px;
+
+    background: #bd3039;
+    color: white;
+
+    border: none;
+    border-radius: 5px;
+
+    font-family: Georgia, serif;
+    font-size: 14px;
+    letter-spacing: 3px;
+
+    cursor: pointer;
+}
+
+#close-help:hover {
+    background: #97242c;
+}
+
+/* 手机屏幕适配 */
+
+@media (max-width: 600px) {
+
+    #help-button {
+        top: 15px;
+        right: 15px;
+    }
+
+    .help-panel {
+        padding: 25px 20px;
+    }
+
+    .help-rule {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+
+    .help-rule span {
+        min-width: 0;
+    }
+}
+/* =========================
+   21. iPad 横屏两列布局
+========================= */
+
+@media (min-width: 960px) and (orientation: landscape) {
+
+    header {
+        padding: 28px 70px 22px;
+    }
+
+    header h1 {
+        font-size: 28px;
+        letter-spacing: 4px;
+    }
+
+    header p {
+        margin-top: 10px;
+        font-size: 10px;
+    }
+
+    main {
+        display: grid;
+        grid-template-columns: minmax(440px, 1.5fr) minmax(240px, 1fr);
+        grid-template-rows: 80px 80px 80px 56px 30px auto;
+        gap: 12px 48px;
+
+        width: 100%;
+        max-width: 1080px;
+        margin: 0 auto;
+        padding: 18px 32px 32px;
+        align-items: start;
+    }
+
+    .deck-area {
+        display: contents;
+    }
+
+    /* 左侧：主卡牌 */
+    #card-deck {
+        grid-column: 1;
+        grid-row: 1 / 5;
+        justify-self: center;
+        align-self: center;
+
+        width: 230px;
+        height: 320px;
+        margin: 0;
+    }
+
+    #card-deck .card {
+        width: 100%;
+        height: 100%;
+        padding: 28px;
+    }
+
+    #card-deck .card-content h2 {
+        font-size: 20px;
+    }
+
+    .deck-hint {
+        grid-column: 1;
+        grid-row: 5;
+        align-self: center;
+
+        text-align: center;
+        font-size: 10px;
+        letter-spacing: 3px;
+    }
+
+    /* 左侧下方：紧凑的新建区域 */
+    .memo-input {
+        grid-column: 1;
+        grid-row: 6;
+        justify-self: center;
+
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px 24px;
+
+        width: 100%;
+        max-width: 480px;
+        padding-top: 16px;
+        border-top: 1px solid #39332e;
+        align-items: end;
+    }
+
+    .memo-input h2 {
+        grid-column: 1 / -1;
+        text-align: left;
+        font-size: 12px;
+        letter-spacing: 3px;
+        color: #b7a99a;
+    }
+
+    #memo-text {
+        grid-column: 1 / -1;
+        height: 46px;
+        font-size: 16px;
+    }
+
+    .suit-selection {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 6px;
+        width: 100%;
+    }
+
+    .suit {
+        width: 100%;
+        height: 44px;
+        font-size: 26px;
+    }
+
+    .priority-section {
+        gap: 8px;
+        align-items: stretch;
+    }
+
+    .priority-label {
+        text-align: left;
+        font-size: 9px;
+        letter-spacing: 2px;
+    }
+
+    .priority-selection {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 5px;
+        width: 100%;
+    }
+
+    .priority {
+        width: 100%;
+        height: 44px;
+        font-size: 17px;
+    }
+
+    #add-card {
+        grid-column: 1 / -1;
+        height: 44px;
+        font-size: 12px;
+        letter-spacing: 2px;
+    }
+
+    /* 右侧：三个牌堆 */
+    .deck-navigation {
+        grid-column: 2;
+        grid-row: 1 / 4;
+
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        width: 100%;
+        margin: 0;
+    }
+
+    .deck-tab {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        width: 100%;
+        height: 80px;
+        padding: 18px 22px;
+        border-radius: 8px;
+
+        text-align: left;
+        font-size: 11px;
+        letter-spacing: 2px;
+    }
+
+    .deck-tab span {
+        font-size: 28px;
+        font-weight: normal;
+        letter-spacing: 0;
+    }
+
+    /* SORT 和 SHUFFLE 并排 */
+    .deck-controls {
+        grid-column: 2;
+        grid-row: 4;
+
+        display: grid;
+        grid-template-columns: 1.4fr 1fr;
+        gap: 10px;
+        width: 100%;
+        margin: 0;
+    }
+
+    .deck-controls button {
+        width: 100%;
+        min-height: 48px;
+        padding: 10px 6px;
+
+        font-size: 10px;
+        letter-spacing: 0.5px;
+        border-color: #5c554f;
+        border-radius: 6px;
+    }
+
+    /* 右侧下方：暂存与完成列表 */
+    #saved-cards {
+        grid-column: 2;
+        grid-row: 5 / 7;
+
+        width: 100%;
+        min-width: 0;
+        max-width: none;
+        max-height: 290px;
+        margin: 0;
+        overflow-y: auto;
+    }
+
+    .saved-card {
+        padding: 14px;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .saved-card-info {
+        gap: 10px;
+    }
+
+    .saved-card-text {
+        font-size: 13px;
+    }
+}
+/* =========================
+   22. 右下角花色介绍
+========================= */
+
+.suit-guide {
+    display: none;
+}
+
+@media (min-width: 960px) and (orientation: landscape) {
+
+    /* 跟随原有 ACTIVE 按钮状态显示，无需修改 JS */
+    main:has(.deck-tab.active[data-deck="active"]) .suit-guide {
+        display: block;
+    }
+
+    .suit-guide {
+        grid-column: 2;
+        grid-row: 6;
+
+        min-width: 0;
+        padding-top: 16px;
+        border-top: 1px solid #39332e;
+    }
+
+    .suit-guide h2 {
+        margin-bottom: 18px;
+        color: #b7a99a;
+        font-size: 12px;
+        font-weight: normal;
+        letter-spacing: 3px;
+    }
+
+    .suit-guide-item {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+    }
+
+    .suit-guide-item + .suit-guide-item {
+        margin-top: 15px;
+    }
+
+    .suit-guide-symbol {
+        width: 24px;
+        flex-shrink: 0;
+        color: #c9bba9;
+        font-size: 27px;
+        text-align: center;
+    }
+
+    .suit-guide-symbol.red {
+        color: #bd3039;
+    }
+
+    .suit-guide-item h3 {
+        color: #c9bba9;
+        font-size: 11px;
+        font-weight: normal;
+        letter-spacing: 1.5px;
+    }
+
+    .suit-guide-item p {
+        margin-top: 5px;
+        color: #938a80;
+        font-size: 12px;
+        line-height: 1.5;
+    }
+}
+/* =========================
+   23. 右上角语言与帮助图标
+========================= */
+
+.language-switcher {
+    position: fixed;
+    top: 25px;
+    right: 86px;
+    z-index: 100;
+
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+
+    background: #222;
+    color: #f5f0e8;
+    border: 1px solid #a99f93;
+    border-radius: 50%;
+}
+
+.language-icon {
+    width: 22px;
+    height: 22px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.4;
+    pointer-events: none;
+}
+
+/* 透明菜单覆盖图标，点击即可选择语言 */
+#language-select {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.language-switcher:focus-within {
+    outline: 2px solid #d4aa70;
+    outline-offset: 3px;
+}
+
+#help-button {
+    top: 25px;
+    right: 30px;
+    width: 44px;
+    height: 44px;
+}
+
+@media (max-width: 959px) {
+    .language-switcher {
+        top: 15px;
+        right: 71px;
+    }
+
+    #help-button {
+        top: 15px;
+        right: 15px;
+    }
+
+    header {
+        padding-top: 85px;
+    }
+}
+/* =========================
+   24. 横屏 Joker 封面
+========================= */
+
+.joker-cover {
+    display: none;
+}
+
+@media (min-width: 960px) and (orientation: landscape) {
+
+    .joker-cover {
+        grid-column: 1;
+        grid-row: 1 / 5;
+        justify-self: center;
+        align-self: center;
+
+        position: relative;
+        width: 230px;
+        height: 320px;
+
+        background: #f5f0e8;
+        color: #242220;
+        border: 1px solid #d4c9bb;
+        border-radius: 15px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
+    }
+
+    /* 内侧细边框 */
+    .joker-cover::before {
+        content: "";
+        position: absolute;
+        inset: 11px;
+        border: 1px solid currentColor;
+        border-radius: 8px;
+        opacity: 0.18;
+        pointer-events: none;
+    }
+
+    /* 暂存：黑色小王 */
+    main:has(.deck-tab.active[data-deck="held"]) .joker-cover {
+        display: grid;
+        place-items: center;
+        color: #242220;
+    }
+
+    /* 已完成：红色大王 */
+    main:has(.deck-tab.active[data-deck="completed"]) .joker-cover {
+        display: grid;
+        place-items: center;
+        color: #bd3039;
+    }
+
+    .joker-corner {
+        position: absolute;
+        top: 22px;
+        left: 19px;
+
+        writing-mode: vertical-rl;
+        text-orientation: upright;
+        font-size: 10px;
+        font-weight: bold;
+        letter-spacing: 2px;
+    }
+
+    .joker-corner.bottom {
+        top: auto;
+        left: auto;
+        right: 19px;
+        bottom: 22px;
+        transform: rotate(180deg);
+    }
+
+    .joker-center {
+        width: 164px;
+        text-align: center;
+    }
+
+    .joker-art {
+        display: block;
+        width: 132px;
+        height: 154px;
+        margin: 0 auto 15px;
+
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }
+
+    .joker-name {
+        font-size: 11px;
+        letter-spacing: 3px;
+    }
+
+    .joker-message {
+        display: none;
+        margin-top: 10px;
+        font-size: 12px;
+        line-height: 1.6;
+        color: #81756b;
+    }
+
+    .joker-held,
+    .joker-completed {
+        display: none;
+    }
+
+    main:has(.deck-tab.active[data-deck="held"]) .joker-held,
+    main:has(.deck-tab.active[data-deck="completed"]) .joker-completed {
+        display: block;
+    }
+
+    /* 跟随语言菜单显示对应短句 */
+    html[lang="en"] .joker-message[lang="en"],
+    html[lang="ko"] .joker-message[lang="ko"],
+    html[lang="zh"] .joker-message[lang="zh"] {
+        display: block;
+    }
+}
